@@ -34,6 +34,14 @@
           shellHook = ''zsh'';
 
           packages = [
+            # C++ Tools
+            gcc
+            libgcc
+            gnumake
+            cmake
+            extra-cmake-modules
+            clang-tools
+            # Dependencies
             pkgs.ncurses
             pkgs.librealsenseWithCuda
             pkgs.tbb_2021_5
