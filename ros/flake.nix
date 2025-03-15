@@ -27,6 +27,7 @@
             cudaOverlay
           ];
         };
+        acados = pkgs.callPackage ./acados.nix {};
       in {
         devShells.default = pkgs.mkShell {
           name = "ROS";
@@ -39,6 +40,7 @@
             pkgs.cudaPackages.cudatoolkit
             pkgs.cudaPackages.cudnn
             pkgs.cudaPackages.tensorrt
+            acados
             pkgs.libGLU
             pkgs.qt5.full
             pkgs.nlohmann_json
@@ -64,11 +66,13 @@
             "${pkgs.cudaPackages.cudatoolkit}/lib"
             "${pkgs.cudaPackages.cudnn}/lib"
             "${pkgs.cudaPackages.tensorrt}/lib"
+            "${acados}/lib"
           ];
 
           TBB_DIR = "${pkgs.tbb}/lib/cmake/TBB";
           nlohmann_json_DIR = "${pkgs.nlohmann_json}/share/cmake/nlohmann_json";
           Eigen3_DIR = "${pkgs.eigen}/share/eigen3/cmake";
+          ACADOS_SOURCE_DIR = "${acados}";
         };
       });
 
