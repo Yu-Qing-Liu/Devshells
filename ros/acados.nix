@@ -8,7 +8,7 @@ stdenv.mkDerivation rec {
     owner = "acados";
     repo = "acados";
     rev = "v${version}";
-    hash = "sha256-0aiwgy5x8jpmzgvp683625v68iwxpaak1nx261xv25al6jf9rs78=";
+    hash = "sha256-AwwsUBCn29WBuTFSgl0spAnQunk14t3N5T2anS8wiJQ=";
     fetchSubmodules = true;
   };
 
@@ -29,43 +29,25 @@ stdenv.mkDerivation rec {
     "-DACADOS_EXAMPLES=ON"
     "-DHPIPM_TARGET=GENERIC"
     "-DBLASFEO_TARGET=GENERIC"
-    "-DCMAKE_INSTALL_PREFIX=${placeholder "out"}"
-    "-DACADOS_INSTALL_DIR=${placeholder "out"}"
-    "-DBUILD_SHARED_LIBS=ON"
   ];
 
   preConfigure = ''
-    # Apply Makefile.rule modifications
-    substituteInPlace Makefile.rule \
-      --replace "BLASFEO_TARGET = AUTO" "BLASFEO_TARGET = GENERIC" \
-      --replace "ACADOS_WITH_QPOASES = 0" "ACADOS_WITH_QPOASES = 1"
+    sed -i 's/BLASFEO_TARGET = .*/BLASFEO_TARGET = GENERIC/' Makefile.rule
+    sed -i 's/ACADOS_WITH_QPOASES = .*/ACADOS_WITH_QPOASES = 1/' Makefile.rule
+    sed -i 's/HPIPM_TARGET = .*/HPIPM_TARGET = GENERIC/' Makefile.rule
   '';
 
   buildPhase = ''
-    mkdir -p build
-    cd build
-    cmake .. $cmakeFlags
-    make -j $NIX_BUILD_CORES
     cd ..
     make shared_library
     cd build
-    make -j $NIX_BUILD_CORES
+    make install
   '';
 
   installPhase = ''
-    mkdir -p $out/lib $out/include
-    # Install libraries
-    find . -name '*.a' -exec cp {} $out/lib \;
-    find . -name '*.so' -exec cp {} $out/lib \;
-    # Install headers
-    cp -r ../include/* $out/include/
-    # Install Python bindings
-    cd ../interfaces/acados_template
-    ${python3.interpreter} setup.py install --prefix=$out
-  '';
-
-  postFixup = ''
-    patchelf --set-rpath "${lib.makeLibraryPath [ blas lapack openblas ]}:$out/lib" $out/lib/*.so
+    # Copy shared libraries
+    mkdir -p $out/source
+    mv ../* $out/source
   '';
 
   meta = with lib; {
