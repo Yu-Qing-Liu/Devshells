@@ -1,6 +1,6 @@
 {
   inputs = {
-    nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/master";
+    nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/develop";
     nixpkgs.follows = "nix-ros-overlay/nixpkgs";
   };
 
@@ -21,7 +21,12 @@
         };
         pkgs = import nixpkgs {
           inherit system;
-          config.allowUnfree = true;
+          config = {
+            allowUnfree = true;
+            permittedInsecurePackages = [
+              "freeimage-unstable-2021-11-01"
+            ];
+          };
           overlays = [
             nix-ros-overlay.overlays.default
             cudaOverlay
@@ -35,12 +40,10 @@
 
           packages = [
             # C++ Tools
-            gcc
-            libgcc
-            gnumake
-            cmake
-            extra-cmake-modules
-            clang-tools
+            pkgs.gcc
+            pkgs.cmake
+            pkgs.gnumake
+            pkgs.clang-tools
             # Dependencies
             pkgs.ncurses
             pkgs.librealsenseWithCuda
@@ -54,12 +57,11 @@
             pkgs.qt5.full
             pkgs.nlohmann_json
             pkgs.eigen
-            (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
-              pyqt5 numpy opencv4 pyyaml pandas pyopengl cryptography twisted pillow
+            (pkgs.python311.withPackages (python-pkgs: with python-pkgs; [
+              setuptools pyqt5 numpy opencv4 pyyaml pandas pyopengl cryptography twisted pillow
             ]))
             (with pkgs.rosPackages.noetic; buildEnv {
               paths = [
-                pluginlib
                 ros-core
                 rospy
                 roscpp
