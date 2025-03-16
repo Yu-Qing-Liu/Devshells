@@ -2,11 +2,16 @@
   inputs = {
     nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/develop";
     nixpkgs.follows = "nix-ros-overlay/nixpkgs";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   };
 
-  outputs = { self, nix-ros-overlay, nixpkgs}:
+  outputs = { self, nix-ros-overlay, nixpkgs, nixpkgs-unstable }:
     nix-ros-overlay.inputs.flake-utils.lib.eachDefaultSystem (system:
       let
+        unstable = import nixpkgs-unstable {
+          inherit system;
+          config.allowUnfree = true;
+        };
         cudaOverlay = final: prev: {
           cudaPackages = prev.cudaPackages_11 // {
             tensorrt = prev.cudaPackages_11.tensorrt_8_6.overrideAttrs (oldAttrs: {
@@ -23,14 +28,17 @@
           inherit system;
           config = {
             allowUnfree = true;
-            permittedInsecurePackages = [
-              "freeimage-unstable-2021-11-01"
-            ];
           };
           overlays = [
             nix-ros-overlay.overlays.default
             cudaOverlay
           ];
+        };
+        opencv = unstable.opencv.override {
+          enableCuda = true;
+          enableUnfree = true;
+          enableEigen = true;
+          enableCudnn = true;
         };
         acados = pkgs.callPackage ./acados.nix {};
       in {
@@ -48,17 +56,17 @@
             pkgs.ncurses
             pkgs.librealsenseWithCuda
             pkgs.tbb_2021_5
-            pkgs.opencv4
             pkgs.cudaPackages.cudatoolkit
             pkgs.cudaPackages.cudnn
             pkgs.cudaPackages.tensorrt
-            acados
             pkgs.libGLU
             pkgs.qt5.full
             pkgs.nlohmann_json
             pkgs.eigen
-            (pkgs.python311.withPackages (python-pkgs: with python-pkgs; [
-              setuptools pyqt5 numpy opencv4 pyyaml pandas pyopengl cryptography twisted pillow
+            opencv
+            acados
+            (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
+              setuptools pyqt5 numpy pyyaml pandas pyopengl cryptography twisted pillow
             ]))
             (with pkgs.rosPackages.noetic; buildEnv {
               paths = [
@@ -79,13 +87,16 @@
             "${pkgs.cudaPackages.cudatoolkit}/lib"
             "${pkgs.cudaPackages.cudnn}/lib"
             "${pkgs.cudaPackages.tensorrt}/lib"
+            "${opencv}/lib"
             "${acados}/source/lib"
           ];
-
+          
           TBB_DIR = "${pkgs.tbb}/lib/cmake/TBB";
           nlohmann_json_DIR = "${pkgs.nlohmann_json}/share/cmake/nlohmann_json";
           Eigen3_DIR = "${pkgs.eigen}/share/eigen3/cmake";
           ACADOS_SOURCE_DIR = "${acados}/source";
+          OpenCV_DIR = "${opencv}/lib/cmake/opencv4";
+          OpenCV_INCLUDE_DIRS = "${opencv}/include/opencv4";
         };
       });
 
