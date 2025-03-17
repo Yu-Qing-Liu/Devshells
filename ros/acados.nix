@@ -31,11 +31,20 @@ stdenv.mkDerivation rec {
     "-DBLASFEO_TARGET=GENERIC"
   ];
 
+  env.NIX_CFLAGS_COMPILE = lib.concatStringsSep " " [
+    "-Wno-error=implicit-function-declaration"
+    "-Wno-error=incompatible-pointer-types"
+    "-Wno-error=int-conversion"
+  ];
+
   preConfigure = ''
     sed -i 's/BLASFEO_TARGET = .*/BLASFEO_TARGET = GENERIC/' Makefile.rule
     sed -i 's/ACADOS_WITH_QPOASES = .*/ACADOS_WITH_QPOASES = 1/' Makefile.rule
     sed -i 's/HPIPM_TARGET = .*/HPIPM_TARGET = GENERIC/' Makefile.rule
-    # sed -i 's/ConstraintsCPY.*/ConstraintsCPY\( FROM->constraints, TO->constraints \);/' ./external/qpoases/src/QProblem.c
+    sed -i 's/#CFLAGS += -DNDEBUG/CFLAGS += -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=int-conversion/' Makefile.rule
+    echo "CFLAGS += -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=int-conversion" >> ./external/hpmpc/Makefile.rule
+    echo "CFLAGS += -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=int-conversion" >> ./external/hpipm/Makefile.rule
+    echo "CFLAGS += -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=int-conversion" >> ./external/blasfeo/Makefile.rule
   '';
 
   buildPhase = ''
