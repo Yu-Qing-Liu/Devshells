@@ -7,8 +7,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "acados";
     repo = "acados";
-    rev = "v${version}";
-    hash = "sha256-AwwsUBCn29WBuTFSgl0spAnQunk14t3N5T2anS8wiJQ=";
+    rev = "fd25099ceb0b66a80147b262db162752fdddb6dc";
+    hash = "sha256-tL5wz4J3pL2S9KZbEdcR9mv2EMgSzWXGseyfzYQlGLA=";
     fetchSubmodules = true;
   };
 
@@ -35,6 +35,7 @@ stdenv.mkDerivation rec {
     sed -i 's/BLASFEO_TARGET = .*/BLASFEO_TARGET = GENERIC/' Makefile.rule
     sed -i 's/ACADOS_WITH_QPOASES = .*/ACADOS_WITH_QPOASES = 1/' Makefile.rule
     sed -i 's/HPIPM_TARGET = .*/HPIPM_TARGET = GENERIC/' Makefile.rule
+    # sed -i 's/ConstraintsCPY.*/ConstraintsCPY\( FROM->constraints, TO->constraints \);/' ./external/qpoases/src/QProblem.c
   '';
 
   buildPhase = ''
