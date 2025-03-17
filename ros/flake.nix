@@ -51,6 +51,7 @@
             pkgs.cudaPackages.tensorrt_8_6
             pkgs.opencv
             pkgs.acados
+            pkgs.ncnn
             (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
               setuptools pyqt5 numpy pyyaml pandas pyopengl cryptography twisted pillow
             ]))
