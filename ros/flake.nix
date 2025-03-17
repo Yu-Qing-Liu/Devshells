@@ -75,15 +75,15 @@
             "${pkgs.cudatoolkit}/lib"
             "${pkgs.cudaPackages.tensorrt_8_6}/lib"
             "${pkgs.opencv}/lib"
-            "${pkgs.acados}/source/lib"
+            "${pkgs.acados}/lib"
           ];
 
           TBB_DIR = "${pkgs.tbb}/lib/cmake/TBB";
           nlohmann_json_DIR = "${pkgs.nlohmann_json}/share/cmake/nlohmann_json";
           Eigen3_DIR = "${pkgs.eigen}/share/eigen3/cmake";
-          ACADOS_SOURCE_DIR = "${pkgs.acados}/source";
           OpenCV_DIR = "${pkgs.opencv}/lib/cmake/opencv4";
           OpenCV_INCLUDE_DIRS = "${pkgs.opencv}/include/opencv4";
+          acados_DIR = "${pkgs.acados}/cmake";
         };
       });
 

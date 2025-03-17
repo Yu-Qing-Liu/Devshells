@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   pname = "acados";
-  version = "0.3.0";
+  version = "0.3.3";
 
   src = fetchFromGitHub {
     owner = "acados";
     repo = "acados";
-    rev = "fd25099ceb0b66a80147b262db162752fdddb6dc";
-    hash = "sha256-tL5wz4J3pL2S9KZbEdcR9mv2EMgSzWXGseyfzYQlGLA=";
+    rev = "v0.3.3";
+    hash = "sha256-YauG763mvtcLmvAD3Q11KJnv48XuotxMO5FZ509UjmM=";
     fetchSubmodules = true;
   };
 
@@ -29,6 +29,7 @@ stdenv.mkDerivation rec {
     "-DACADOS_EXAMPLES=ON"
     "-DHPIPM_TARGET=GENERIC"
     "-DBLASFEO_TARGET=GENERIC"
+    "-DACADOS_INSTALL_DIR=${placeholder "out"}"
   ];
 
   env.NIX_CFLAGS_COMPILE = lib.concatStringsSep " " [
@@ -37,27 +38,12 @@ stdenv.mkDerivation rec {
     "-Wno-error=int-conversion"
   ];
 
-  preConfigure = ''
-    sed -i 's/BLASFEO_TARGET = .*/BLASFEO_TARGET = GENERIC/' Makefile.rule
-    sed -i 's/ACADOS_WITH_QPOASES = .*/ACADOS_WITH_QPOASES = 1/' Makefile.rule
-    sed -i 's/HPIPM_TARGET = .*/HPIPM_TARGET = GENERIC/' Makefile.rule
-    sed -i 's/#CFLAGS += -DNDEBUG/CFLAGS += -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=int-conversion/' Makefile.rule
-    echo "CFLAGS += -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=int-conversion" >> ./external/hpmpc/Makefile.rule
-    echo "CFLAGS += -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=int-conversion" >> ./external/hpipm/Makefile.rule
-    echo "CFLAGS += -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=int-conversion" >> ./external/blasfeo/Makefile.rule
-  '';
-
-  buildPhase = ''
-    cd ..
-    make shared_library
-    cd build
-    make install
-  '';
-
   installPhase = ''
-    # Copy shared libraries
-    mkdir -p $out/source
-    mv ../* $out/source
+    mkdir -p $out
+    make install
+    mkdir -p $out/acados
+    cp -r ${src}/* $out/acados
+    find $out/lib -name "*.so" -exec patchelf --set-rpath "$(patchelf --print-rpath {}):${lib.makeLibraryPath buildInputs}" {} \;
   '';
 
   meta = with lib; {
