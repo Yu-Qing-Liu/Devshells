@@ -1,12 +1,12 @@
 {
   inputs = {
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/develop";
-    nix-ros-overlay.inputs.nixpkgs.follows = "nixpkgs-unstable";  # Key change
-    nixpkgs.follows = "nixpkgs-unstable";
+    nix-ros-overlay.inputs.nixpkgs.follows = "nixpkgs-stable";
+    nixpkgs.follows = "nixpkgs-stable";
   };
 
-  outputs = { self, nix-ros-overlay, nixpkgs, nixpkgs-unstable }:
+  outputs = { self, nix-ros-overlay, nixpkgs, nixpkgs-stable }:
     nix-ros-overlay.inputs.flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
@@ -17,12 +17,15 @@
           overlays = [
             nix-ros-overlay.overlays.default
             (final: prev: {
-              opencv = prev.opencv.override {
-                enableCuda = true;
-                enableUnfree = true;
-                enableEigen = true;
-                enableCudnn = true;
-              };
+              opencv = prev.opencv.overrideAttrs (old: {
+                buildInputs = old.buildInputs ++ [
+                  final.cudaPackages.cudatoolkit
+                ];
+                cmakeFlags = old.cmakeFlags ++ [
+                  "-DWITH_CUDA=ON"
+                  "-DCUDA_ARCH_BIN=7.5"
+                ];
+              });
               acados = prev.callPackage ./acados.nix {};
             })
           ];
@@ -42,7 +45,7 @@
             pkgs.udev
             pkgs.ncurses
             pkgs.librealsenseWithCuda
-            pkgs.tbb_2022_0
+            pkgs.tbb_2021_5
             pkgs.libGLU
             pkgs.qt5.full
             pkgs.nlohmann_json
