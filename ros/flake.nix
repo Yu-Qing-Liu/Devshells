@@ -13,17 +13,17 @@
           inherit system;
           config = {
             allowUnfree = true;
+            cudaSupport = true;
           };
           overlays = [
             nix-ros-overlay.overlays.default
             (final: prev: {
               opencv = prev.opencv.overrideAttrs (old: {
-                buildInputs = old.buildInputs ++ [
-                  final.cudaPackages.cudatoolkit
-                ];
                 cmakeFlags = old.cmakeFlags ++ [
-                  "-DWITH_CUDA=ON"
-                  "-DCUDA_ARCH_BIN=7.5"
+                  (prev.lib.cmakeBool "WITH_CUDA" true)
+                  (prev.lib.cmakeBool "CUDA_FAST_MATH" true)
+                  (prev.lib.cmakeFeature "CUDA_ARCH_BIN" "7.5")
+                  (prev.lib.cmakeFeature "CUDA_NVCC_FLAGS" "-allow-unsupported-compiler")
                 ];
               });
               acados = prev.callPackage ./acados.nix {};
@@ -50,11 +50,11 @@
             pkgs.qt5.full
             pkgs.nlohmann_json
             pkgs.eigen
-            pkgs.cudatoolkit
             pkgs.cudaPackages.tensorrt_8_6
             pkgs.opencv
             pkgs.acados
             pkgs.ncnn
+            pkgs.hwloc
             (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
               setuptools pyqt5 numpy pyyaml pandas pyopengl cryptography twisted pillow
             ]))
@@ -81,13 +81,15 @@
             "${pkgs.opencv}/lib"
             "${pkgs.acados}/lib"
           ];
-
+          
+          TRT_LIBPATH = "${pkgs.cudaPackages.tensorrt_8_6}/lib";
           TBB_DIR = "${pkgs.tbb}/lib/cmake/TBB";
           nlohmann_json_DIR = "${pkgs.nlohmann_json}/share/cmake/nlohmann_json";
           Eigen3_DIR = "${pkgs.eigen}/share/eigen3/cmake";
           OpenCV_DIR = "${pkgs.opencv}/lib/cmake/opencv4";
           OpenCV_INCLUDE_DIRS = "${pkgs.opencv}/include/opencv4";
           acados_DIR = "${pkgs.acados}/cmake";
+          ncnn_DIR = "${pkgs.ncnn}/lib/cmake/ncnn";
         };
       });
 
