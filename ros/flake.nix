@@ -55,7 +55,7 @@
             pkgs.acados
             pkgs.ncnn
             pkgs.hwloc
-            (pkgs.python310.withPackages (python-pkgs: with python-pkgs; [
+            (pkgs.python312.withPackages (python-pkgs: with python-pkgs; [
               setuptools pyqt5 numpy pyyaml pandas pyopengl cryptography twisted pillow scipy networkx matplotlib
             ]))
             (with pkgs.rosPackages.noetic; buildEnv {
