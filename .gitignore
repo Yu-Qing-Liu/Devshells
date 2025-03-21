@@ -4,3 +4,6 @@ AD/
 Simulator/
 Scripts/
 Docker/
+.dotfiles/
+.ros/
+.local/
