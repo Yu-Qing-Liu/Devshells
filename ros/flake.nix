@@ -60,7 +60,7 @@
             pkgs.hwloc
             pkgs.gazebo_11
             pkgs.ignition.cmake2
-            (pkgs.python312.withPackages (python-pkgs: with python-pkgs; [
+            (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
               setuptools pyqt5 numpy pyyaml pandas pyopengl cryptography twisted pillow scipy networkx matplotlib
             ]))
             (with pkgs.rosPackages.noetic; buildEnv {
