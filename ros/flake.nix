@@ -44,13 +44,21 @@
             pkgs.cmake
             pkgs.gnumake
             pkgs.clang-tools
+            # Graphics drivers
+            pkgs.mesa
+            pkgs.libglvnd
+            pkgs.vulkan-loader
+            pkgs.vulkan-validation-layers
+            pkgs.glfw
+            pkgs.qt5.full
+            pkgs.linuxPackages.nvidia_x11
+            pkgs.libGLU
+            pkgs.libGL
             # Dependencies
             pkgs.udev
             pkgs.ncurses
             pkgs.librealsenseWithCuda
             pkgs.tbb_2021_5
-            pkgs.libGLU
-            pkgs.qt5.full
             pkgs.nlohmann_json
             pkgs.eigen
             pkgs.cudaPackages.tensorrt_8_6
@@ -60,6 +68,7 @@
             pkgs.hwloc
             pkgs.gazebo_11
             pkgs.ignition.cmake2
+            pkgs.xwayland
             (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
               setuptools pyqt5 numpy pyyaml pandas pyopengl cryptography twisted pillow scipy networkx matplotlib
             ]))
@@ -99,6 +108,9 @@
           OpenCV_INCLUDE_DIRS = "${pkgs.opencv}/include/opencv4";
           acados_DIR = "${pkgs.acados}/cmake";
           ncnn_DIR = "${pkgs.ncnn}/lib/cmake/ncnn";
+          GDK_BACKEND="x11";
+          QT_QPA_PLATFORM="xcb";
+          SDL_VIDEODRIVER="x11";
         };
       });
 
