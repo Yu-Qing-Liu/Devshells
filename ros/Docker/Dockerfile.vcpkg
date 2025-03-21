@@ -1,0 +1,19 @@
+FROM ad-opencv:latest
+
+WORKDIR /home/trtuser
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+SHELL ["/bin/bash", "-c"]
+
+######################
+# VCPKG & Realsense
+######################
+RUN apt-get update && \
+    apt-get install -y autoconf libudev-dev
+
+RUN git clone https://github.com/Microsoft/vcpkg.git && \
+    cd vcpkg && \
+    ./bootstrap-vcpkg.sh && \
+    ./vcpkg integrate install && \
+    ./vcpkg install realsense2

@@ -1,0 +1,97 @@
+FROM ad-acados:latest
+
+WORKDIR /home/trtuser
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+ENV QT_DEBUG_PLUGINS=0
+ENV QT_QPA_PLATFORM=xcb
+ENV VIRTUAL_ENV_DISABLE_PROMPT=1
+ENV SYSTEMD_EDITOR=nvim
+ENV EDITOR=nvim
+ENV VISUAL=nvim
+ENV SHELL=zsh
+ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/home/trtuser/acados/lib"
+ENV ACADOS_SOURCE_DIR="/home/trtuser/acados"
+ENV ROS_MASTER_URI=http://10.121.219.18:11311
+ENV ROS_HOSTNAME=10.122.245.203
+
+####################
+# Extra dependencies
+####################
+RUN apt-get update && apt-get install -y \
+    nlohmann-json3-dev \
+    libncurses5-dev \
+    libncursesw5-dev \
+    software-properties-common \
+    lua5.1 \
+    luarocks \
+    ranger \
+    zsh \
+    wl-clipboard \
+    gdb
+
+RUN pip uninstall -y PyQt5 && \
+    apt-get install -y python3-pyqt5 python3-venv
+
+RUN add-apt-repository ppa:neovim-ppa/unstable && \
+    apt-get update && \
+    apt-get install -y neovim
+
+RUN add-apt-repository ppa:ubuntu-toolchain-r/ppa -y && \
+    apt-get update && \
+    apt-get install -y g++-13 gcc-13
+
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 --slave /usr/bin/g++ g++ /usr/bin/g++-13 --slave /usr/bin/gcov gcov /usr/bin/gcov-13
+
+RUN echo "trtuser ALL=(ALL:ALL) ALL" >> /etc/sudoers
+
+####################
+# zsh
+####################
+USER trtuser
+
+RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+RUN sed -i.old '1s;^;LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"/home/trtuser/acados/lib"\n;' /home/trtuser/.zshrc
+
+RUN sed -i.old '1s;^;ACADOS_SOURCE_DIR="/home/trtuser/acados"\n;' /home/trtuser/.zshrc
+
+RUN sed -i.old '1s;^;source /opt/ros/noetic/setup.sh\n;' /home/trtuser/.zshrc
+
+RUN sed -i 's/^ZSH_THEME=.*/ZSH_THEME="custom"/' /home/trtuser/.zshrc
+
+RUN echo -e '\
+function ranger-cd() {\n\
+    temp_file="$(mktemp -t "ranger_cd.XXXXXXXXXX")"\n\
+    ranger --choosedir="$temp_file" -- "${@:-$PWD}"\n\
+    if chosen_dir="$(cat -- "$temp_file")" && [ -n "$chosen_dir" ] && [ "$chosen_dir" != "$PWD" ]; then\n\
+        cd -- "$chosen_dir"\n\
+    fi\n\
+    rm -f -- "$temp_file"\n\
+}\n\
+\n\
+# Aliases\n\
+alias -- grep="grep --color=auto"\n\
+alias -- ls="ls --color=auto"\n\
+alias -- n="nvim \$1"\n\
+alias -- r="ranger-cd"\n\
+alias -- ranger="ranger-cd"\n\
+alias -- vimdiff="nvim -d"\n\
+' >> /home/trtuser/.zshrc
+
+####################
+# github
+########zsh############
+COPY . .
+
+RUN LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*') && \
+    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" && \
+    tar xf lazygit.tar.gz lazygit && \
+    install lazygit -D -t /usr/local/bin/ && \
+    rm lazygit.tar.gz lazygit
+
+RUN mkdir -p /home/trtuser/.config/lazygit && \
+    echo "gui:" > /home/trtuser/.config/lazygit/config.yml && \
+    echo "  theme:" >> /home/trtuser/.config/lazygit/config.yml && \
+    echo "    lightTheme: false" >> /home/trtuser/.config/lazygit/config.yml
