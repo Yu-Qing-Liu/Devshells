@@ -30,7 +30,6 @@
                 ];
               });
               acados = prev.callPackage ./acados.nix {};
-              ignition = prev.callPackage ./ignition.nix {};
             })
           ];
         };
@@ -60,12 +59,15 @@
             pkgs.ncnn
             pkgs.hwloc
             pkgs.gazebo_11
-            pkgs.ignition
+            pkgs.ignition.cmake2
             (pkgs.python312.withPackages (python-pkgs: with python-pkgs; [
               setuptools pyqt5 numpy pyyaml pandas pyopengl cryptography twisted pillow scipy networkx matplotlib
             ]))
             (with pkgs.rosPackages.noetic; buildEnv {
               paths = [
+                ackermann-msgs
+                urdf
+                camera-info-manager
                 ros-core
                 rospy
                 roscpp
