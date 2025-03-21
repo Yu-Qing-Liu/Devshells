@@ -14,6 +14,9 @@
           config = {
             allowUnfree = true;
             cudaSupport = true;
+            permittedInsecurePackages = [
+              "freeimage-unstable-2021-11-01"
+            ];
           };
           overlays = [
             nix-ros-overlay.overlays.default
@@ -27,6 +30,7 @@
                 ];
               });
               acados = prev.callPackage ./acados.nix {};
+              ignition = prev.callPackage ./ignition.nix {};
             })
           ];
         };
@@ -55,6 +59,8 @@
             pkgs.acados
             pkgs.ncnn
             pkgs.hwloc
+            pkgs.gazebo_11
+            pkgs.ignition
             (pkgs.python312.withPackages (python-pkgs: with python-pkgs; [
               setuptools pyqt5 numpy pyyaml pandas pyopengl cryptography twisted pillow scipy networkx matplotlib
             ]))
@@ -70,6 +76,7 @@
                 geometry-msgs
                 tf2-geometry-msgs
                 gazebo-msgs
+                gazebo-ros
                 robot-localization
               ];
             })
