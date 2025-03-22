@@ -67,19 +67,19 @@
             pkgs.ncnn
             pkgs.hwloc
             pkgs.xwayland
-            # ROS
-            pkgs.colcon
+            # Python
             (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
               setuptools pyqt5 numpy pyyaml pandas pyopengl cryptography twisted pillow scipy networkx matplotlib
             ]))
-            (with pkgs.rosPackages.iron; buildEnv {
+            # ROS
+            pkgs.colcon
+            (with pkgs.rosPackages.jazzy; buildEnv {
               paths = [
                 ros-core
-                rospy
-                roscpp
+                rclpy
+                rclcpp
                 cv-bridge
                 tf2
-                tf
                 image-transport
                 geometry-msgs
                 tf2-geometry-msgs
