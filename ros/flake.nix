@@ -36,7 +36,7 @@
       in {
         devShells.default = pkgs.mkShell {
           name = "ROS";
-          shellHook = ''zsh'';
+          shellHook = ''export SHELL=/run/current-system/sw/bin/zsh'';
 
           packages = [
             # C++ Tools
