@@ -44,6 +44,8 @@
             pkgs.cmake
             pkgs.gnumake
             pkgs.clang-tools
+            pkgs.gdb
+            pkgs.valgrind
             # Graphics drivers
             pkgs.mesa
             pkgs.libglvnd
