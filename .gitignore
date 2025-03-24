@@ -8,3 +8,4 @@ level-5-simulator/
 .dotfiles/
 .ros/
 .local/
+.gcroots/
