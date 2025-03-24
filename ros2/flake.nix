@@ -72,9 +72,12 @@
               setuptools pyqt5 numpy pyyaml pandas pyopengl cryptography twisted pillow scipy networkx matplotlib
             ]))
             # ROS
-            pkgs.colcon
             (with pkgs.rosPackages.jazzy; buildEnv {
               paths = [
+                colcon
+                ament-cmake-core
+                python-cmake-module
+                # ros extras
                 ros-core
                 rclpy
                 rclcpp
@@ -85,6 +88,24 @@
                 tf2-geometry-msgs
                 gazebo-msgs
                 robot-localization
+                # ros gz
+                gz-cmake-vendor
+                gz-common-vendor
+                gz-dartsim-vendor
+                gz-fuel-tools-vendor
+                gz-gui-vendor
+                gz-launch-vendor
+                gz-math-vendor
+                gz-msgs-vendor
+                gz-ogre-next-vendor
+                gz-physics-vendor
+                gz-plugin-vendor
+                gz-rendering-vendor
+                gz-sensors-vendor
+                gz-sim-vendor
+                gz-tools-vendor
+                gz-transport-vendor
+                gz-utils-vendor
               ];
             })
           ];
