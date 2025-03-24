@@ -67,6 +67,7 @@
             pkgs.ncnn
             pkgs.hwloc
             pkgs.xwayland
+            pkgs.colcon
             # Python
             (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
               setuptools pyqt5 numpy pyyaml pandas pyopengl cryptography twisted pillow scipy networkx matplotlib
@@ -74,7 +75,6 @@
             # ROS
             (with pkgs.rosPackages.jazzy; buildEnv {
               paths = [
-                colcon
                 ament-cmake-core
                 python-cmake-module
                 # ros extras
