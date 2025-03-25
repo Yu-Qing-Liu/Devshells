@@ -36,7 +36,11 @@
       in {
         devShells.default = pkgs.mkShell {
           name = "ROS";
-          shellHook = ''export SHELL=/run/current-system/sw/bin/zsh'';
+          shellHook = ''
+            export SHELL=/run/current-system/sw/bin/zsh
+            export GAZEBO_MODEL_PATH="/home/admin/Containers/ros/Simulator/src/models_pkg"
+            export ROS_PACKAGE_PATH="/home/admin/Containers/ros/Simulator/src"
+          '';
 
           packages = [
             # C++ Tools
