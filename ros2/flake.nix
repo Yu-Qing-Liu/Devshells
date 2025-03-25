@@ -89,6 +89,7 @@
                 gazebo-msgs
                 robot-localization
                 # ros gz
+                ros-gz
                 gz-cmake-vendor
                 gz-common-vendor
                 gz-dartsim-vendor
