@@ -21,6 +21,7 @@
           overlays = [
             nix-ros-overlay.overlays.default
             (final: prev: {
+              tbb = prev.tbb_2021_11;
               opencv = prev.opencv.overrideAttrs (old: {
                 cmakeFlags = old.cmakeFlags ++ [
                   (prev.lib.cmakeBool "WITH_CUDA" true)
@@ -64,7 +65,7 @@
             pkgs.udev
             pkgs.ncurses
             pkgs.librealsenseWithCuda
-            pkgs.tbb_2021_5
+            pkgs.tbb
             pkgs.nlohmann_json
             pkgs.eigen
             pkgs.cudaPackages.tensorrt_8_6
@@ -93,6 +94,12 @@
                 # simulators
                 gazebo-ros-pkgs
                 stage-ros
+                # misc
+                robot-state-publisher
+                joint-state-publisher
+                rqt
+                # rqt-common-plugins
+                xacro
               ];
             })
           ];
