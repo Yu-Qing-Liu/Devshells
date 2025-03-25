@@ -99,7 +99,6 @@
                 robot-state-publisher
                 joint-state-publisher
                 rqt
-                # rqt-common-plugins
                 xacro
               ];
             })
