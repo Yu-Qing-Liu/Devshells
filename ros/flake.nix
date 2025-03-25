@@ -21,6 +21,7 @@
           overlays = [
             nix-ros-overlay.overlays.default
             (final: prev: {
+              gazebo = prev.callPackage ./gazebo.nix {};
               opencv = prev.opencv.overrideAttrs (old: {
                 cmakeFlags = old.cmakeFlags ++ [
                   (prev.lib.cmakeBool "WITH_CUDA" true)
