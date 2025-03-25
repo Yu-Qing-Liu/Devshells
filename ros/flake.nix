@@ -49,6 +49,7 @@
             pkgs.cmake
             pkgs.gnumake
             pkgs.clang-tools
+            pkgs.llvmPackages.openmp
             pkgs.gdb
             pkgs.valgrind
             # Graphics drivers
