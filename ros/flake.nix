@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
-    nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/develop";
+    nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/staging";
     nix-ros-overlay.inputs.nixpkgs.follows = "nixpkgs-stable";
     nixpkgs.follows = "nixpkgs-stable";
   };
@@ -21,7 +21,6 @@
           overlays = [
             nix-ros-overlay.overlays.default
             (final: prev: {
-              gazebo = prev.callPackage ./gazebo.nix {};
               opencv = prev.opencv.overrideAttrs (old: {
                 cmakeFlags = old.cmakeFlags ++ [
                   (prev.lib.cmakeBool "WITH_CUDA" true)
