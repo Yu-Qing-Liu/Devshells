@@ -72,7 +72,7 @@
             pkgs.acados
             pkgs.ncnn
             pkgs.hwloc
-            pkgs.gazebo_11
+            pkgs.gazebo
             pkgs.ignition.cmake2
             pkgs.xwayland
             (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
@@ -81,20 +81,18 @@
             (with pkgs.rosPackages.noetic; buildEnv {
               paths = [
                 ackermann-msgs
-                urdf
-                camera-info-manager
-                ros-core
-                rospy
-                roscpp
-                cv-bridge
-                tf2
-                tf
-                image-transport
-                geometry-msgs
-                tf2-geometry-msgs
-                gazebo-msgs
-                gazebo-ros
                 robot-localization
+                # ros-noetic-desktop-full
+                angles
+                robot
+                roslint
+                perception
+                # viz
+                ros-base
+                rviz
+                # simulators
+                gazebo-ros-pkgs
+                stage-ros
               ];
             })
           ];
