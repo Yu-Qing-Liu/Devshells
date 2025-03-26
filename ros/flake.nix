@@ -100,6 +100,9 @@
                 joint-state-publisher
                 rqt
                 xacro
+                # slam
+                hector-slam
+                hector-slam-launch
               ];
             })
           ];
