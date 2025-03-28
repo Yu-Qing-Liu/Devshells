@@ -78,7 +78,7 @@
             pkgs.ignition.cmake2
             pkgs.xwayland
             (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
-              setuptools pyqt5 numpy pyyaml pandas pyopengl cryptography twisted pillow scipy networkx matplotlib
+              setuptools distutils pyqt5 numpy pyyaml pandas pyopengl cryptography twisted pillow scipy networkx matplotlib
             ]))
             (with pkgs.rosPackages.noetic; buildEnv {
               paths = [
