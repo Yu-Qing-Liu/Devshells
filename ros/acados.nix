@@ -41,8 +41,6 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out
     make install
-    mkdir -p $out/acados
-    cp -r ${src}/* $out/acados
     find $out/lib -name "*.so" -exec patchelf --set-rpath "$(patchelf --print-rpath {}):${lib.makeLibraryPath buildInputs}" {} \;
   '';
 
