@@ -24,6 +24,8 @@
               tbb = prev.tbb_2021_11;
               opencv = prev.opencv.overrideAttrs (old: {
                 cmakeFlags = old.cmakeFlags ++ [
+                  (prev.lib.cmakeBool "WITH_GTK" true)
+                  (prev.lib.cmakeBool "WITH_QT" true)
                   (prev.lib.cmakeBool "WITH_CUDA" true)
                   (prev.lib.cmakeBool "CUDA_FAST_MATH" true)
                   (prev.lib.cmakeFeature "CUDA_ARCH_BIN" "7.5")
@@ -62,6 +64,7 @@
             pkgs.linuxPackages.nvidia_x11
             pkgs.libGLU
             pkgs.libGL
+            pkgs.gtk2
             # Dependencies
             pkgs.udev
             pkgs.ncurses
@@ -101,8 +104,7 @@
                 rqt
                 xacro
                 # slam
-                hector-slam
-                hector-slam-launch
+                gmapping
               ];
             })
           ];
