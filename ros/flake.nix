@@ -65,6 +65,7 @@
             pkgs.libGLU
             pkgs.libGL
             pkgs.gtk2
+            pkgs.glm
             # Dependencies
             pkgs.udev
             pkgs.ncurses
@@ -81,7 +82,7 @@
             pkgs.ignition.cmake2
             pkgs.xwayland
             (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
-              setuptools distutils pyqt5 numpy pyyaml pandas pyopengl cryptography twisted pillow scipy networkx matplotlib
+              setuptools distutils pyqt5 pyglm numpy pyyaml pandas pyopengl cryptography twisted pillow scipy networkx matplotlib
             ]))
             (with pkgs.rosPackages.noetic; buildEnv {
               paths = [
@@ -115,7 +116,7 @@
             "${pkgs.opencv}/lib"
             "${pkgs.acados}/lib"
           ];
-          
+
           TRT_LIBPATH = "${pkgs.cudaPackages.tensorrt_8_6}/lib";
           TBB_DIR = "${pkgs.tbb}/lib/cmake/TBB";
           nlohmann_json_DIR = "${pkgs.nlohmann_json}/share/cmake/nlohmann_json";
@@ -124,9 +125,9 @@
           OpenCV_INCLUDE_DIRS = "${pkgs.opencv}/include/opencv4";
           acados_DIR = "${pkgs.acados}/cmake";
           ncnn_DIR = "${pkgs.ncnn}/lib/cmake/ncnn";
-          GDK_BACKEND="x11";
-          QT_QPA_PLATFORM="xcb";
-          SDL_VIDEODRIVER="x11";
+          GDK_BACKEND = "x11";
+          QT_QPA_PLATFORM = "xcb";
+          SDL_VIDEODRIVER = "x11";
         };
       });
 
