@@ -127,6 +127,7 @@
           ncnn_DIR = "${pkgs.ncnn}/lib/cmake/ncnn";
           GDK_BACKEND = "x11";
           QT_QPA_PLATFORM = "xcb";
+          PYOPENGL_PLATFORM="x11";
           SDL_VIDEODRIVER = "x11";
         };
       });
