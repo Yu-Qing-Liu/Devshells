@@ -1,12 +1,16 @@
 {
   inputs = {
-    nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/develop";
+    nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/master";
     nixpkgs.follows = "nix-ros-overlay/nixpkgs";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   };
 
-  outputs = { self, nix-ros-overlay, nixpkgs }:
+  outputs = { self, nix-ros-overlay, nixpkgs, nixpkgs-unstable }:
     nix-ros-overlay.inputs.flake-utils.lib.eachDefaultSystem (system:
       let
+        unstable = import nixpkgs-unstable {
+          inherit system;
+        };
         pkgs = import nixpkgs {
           inherit system;
           config = {
@@ -20,10 +24,9 @@
             nix-ros-overlay.overlays.default
             (final: prev: {
               tbb = prev.tbb_2021_11;
+              tensorrt = unstable.cudaPackages.tensorrt_8_6;
               opencv = prev.opencv.overrideAttrs (old: {
                 cmakeFlags = old.cmakeFlags ++ [
-                  (prev.lib.cmakeBool "WITH_GTK" true)
-                  (prev.lib.cmakeBool "WITH_QT" true)
                   (prev.lib.cmakeBool "WITH_CUDA" true)
                   (prev.lib.cmakeBool "CUDA_FAST_MATH" true)
                   (prev.lib.cmakeFeature "CUDA_ARCH_BIN" "7.5")
@@ -57,21 +60,19 @@
             pkgs.libglvnd
             pkgs.vulkan-loader
             pkgs.vulkan-validation-layers
-            pkgs.glfw
             pkgs.qt5.full
             pkgs.linuxPackages.nvidia_x11
             pkgs.libGLU
             pkgs.libGL
-            pkgs.gtk2
             pkgs.glm
             # Dependencies
+            pkgs.tensorrt
             pkgs.udev
             pkgs.ncurses
             pkgs.librealsenseWithCuda
             pkgs.tbb
             pkgs.nlohmann_json
             pkgs.eigen
-            pkgs.cudaPackages.tensorrt_8_6
             pkgs.opencv
             pkgs.acados
             pkgs.ncnn
@@ -109,13 +110,12 @@
           ];
 
           LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
-            "${pkgs.cudatoolkit}/lib"
-            "${pkgs.cudaPackages.tensorrt_8_6}/lib"
+            "${pkgs.tensorrt}/lib"
             "${pkgs.opencv}/lib"
             "${pkgs.acados}/lib"
           ];
 
-          TRT_LIBPATH = "${pkgs.cudaPackages.tensorrt_8_6}/lib";
+          TRT_LIBPATH = "${pkgs.tensorrt}/lib";
           TBB_DIR = "${pkgs.tbb}/lib/cmake/TBB";
           nlohmann_json_DIR = "${pkgs.nlohmann_json}/share/cmake/nlohmann_json";
           Eigen3_DIR = "${pkgs.eigen}/share/eigen3/cmake";
