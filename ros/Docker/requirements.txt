@@ -1,9 +1,0 @@
-PyQt5
-opencv-python
-numpy
-matplotlib
-pandas
-tqdm
-PyYAML
-scipy
-networkx
