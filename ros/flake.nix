@@ -1,12 +1,10 @@
 {
   inputs = {
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/develop";
-    nix-ros-overlay.inputs.nixpkgs.follows = "nixpkgs-stable";
-    nixpkgs.follows = "nixpkgs-stable";
+    nixpkgs.follows = "nix-ros-overlay/nixpkgs";
   };
 
-  outputs = { self, nix-ros-overlay, nixpkgs, nixpkgs-stable }:
+  outputs = { self, nix-ros-overlay, nixpkgs }:
     nix-ros-overlay.inputs.flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
