@@ -80,8 +80,9 @@
             pkgs.gazebo
             pkgs.ignition.cmake2
             pkgs.xwayland
+            pkgs.freetype
             (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
-              setuptools distutils pyqt5 pyglm numpy pyyaml pandas pyopengl cryptography twisted pillow scipy networkx matplotlib
+              setuptools distutils pyqt5 pyglm numpy pyyaml pandas pyopengl cryptography twisted pillow scipy networkx matplotlib freetype-py
             ]))
             (with pkgs.rosPackages.noetic; buildEnv {
               paths = [
