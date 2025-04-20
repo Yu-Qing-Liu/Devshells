@@ -40,6 +40,18 @@
       in {
         devShells.default = pkgs.mkShell {
           name = "ROS";
+
+          NIX_CFLAGS_COMPILE = pkgs.lib.concatStringsSep " " [
+            "-Wno-error=implicit-function-declaration"
+            "-Wno-error=incompatible-pointer-types"
+            "-Wno-error=int-conversion"
+          ];
+          NIX_CXXFLAGS_COMPILE = pkgs.lib.concatStringsSep " " [
+            "-Wno-error=implicit-function-declaration"
+            "-Wno-error=incompatible-pointer-types"
+            "-Wno-error=int-conversion"
+          ];
+
           shellHook = ''
             export SHELL=/run/current-system/sw/bin/zsh
             export GAZEBO_MODEL_PATH="/home/admin/Containers/ros/Simulator/src/models_pkg:$GAZEBO_MODEL_PATH"
