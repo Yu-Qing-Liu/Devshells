@@ -56,6 +56,7 @@
             export SHELL=/run/current-system/sw/bin/zsh
             export GAZEBO_MODEL_PATH="/home/admin/Containers/ros/Simulator/src/models_pkg:$GAZEBO_MODEL_PATH"
             export ROS_PACKAGE_PATH="/home/admin/Containers/ros/Simulator/src:$ROS_PACKAGE_PATH"
+            export LD_LIBRARY_PATH="/home/admin/Containers/ros/AD/devel/lib:$LD_LIBRARY_PATH"
             source /home/admin/Containers/ros/AD/devel/setup.sh
           '';
 
