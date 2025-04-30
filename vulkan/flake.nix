@@ -3,8 +3,8 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   };
 
-  outputs = { self, nixpkgs-unstable }:
-    nix-ros-overlay.inputs.flake-utils.lib.eachDefaultSystem (system:
+  outputs = { self, nixpkgs-unstable, flake-utils }:
+    flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs-unstable {
           inherit system;
@@ -44,11 +44,6 @@
             pkgs.glm
             pkgs.freetype
           ];
-
-          GDK_BACKEND = "x11";
-          QT_QPA_PLATFORM = "xcb";
-          PYOPENGL_PLATFORM="x11";
-          SDL_VIDEODRIVER = "x11";
         };
       });
 }
