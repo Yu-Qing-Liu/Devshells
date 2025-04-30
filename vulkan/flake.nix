@@ -34,9 +34,11 @@
             pkgs.libglvnd
             pkgs.linuxPackages.nvidia_x11
             # Vulkan
+            pkgs.vulkan-headers
             pkgs.vulkan-loader
             pkgs.vulkan-validation-layers
             pkgs.vulkan-tools
+            pkgs.vulkan-tools-lunarg
             pkgs.spirv-tools
             pkgs.shaderc
             # Dependencies
@@ -44,6 +46,19 @@
             pkgs.glm
             pkgs.freetype
           ];
+
+          LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
+            "${pkgs.glfw}/lib"
+            "${pkgs.glm}/lib"
+            "${pkgs.freetype}/lib"
+            "${pkgs.vulkan-loader}/lib"
+            "${pkgs.vulkan-validation-layers}/lib"
+          ];
+
+          VULKAN_SDK = "${pkgs.vulkan-headers}";
+          VK_LAYER_PATH = "${pkgs.vulkan-validation-layers}/share/vulkan/explicit_layer.d";
+          glm_DIR = "${pkgs.glm}";
+          glfw3_DIR = "${pkgs.glfw}/lib/cmake/glfw3";
         };
       });
 }
