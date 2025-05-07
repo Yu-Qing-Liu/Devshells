@@ -84,6 +84,7 @@
             pkgs.udev
             pkgs.ncurses
             pkgs.librealsense
+            pkgs.librealsense-gui
             pkgs.tbb
             pkgs.nlohmann_json
             pkgs.eigen
