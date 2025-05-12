@@ -80,6 +80,10 @@
             pkgs.libGL
             pkgs.glm
             # Dependencies
+            pkgs.gcc-arm-embedded
+            pkgs.ninja
+            pkgs.mbed-cli
+            pkgs.mercurial
             pkgs.tensorrt
             pkgs.udev
             pkgs.ncurses
