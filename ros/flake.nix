@@ -45,9 +45,6 @@
             "-Wno-error=implicit-function-declaration"
             "-Wno-error=incompatible-pointer-types"
             "-Wno-error=int-conversion"
-            "-I${pkgs.gcc-arm-embedded}/arm-none-eabi/include"
-            "-isystem"
-            "${pkgs.gcc-arm-embedded}/lib/gcc/arm-none-eabi/${pkgs.gcc-arm-embedded.version}/include"
           ];
           NIX_CXXFLAGS_COMPILE = pkgs.lib.concatStringsSep " " [
             "-Wno-error=implicit-function-declaration"
