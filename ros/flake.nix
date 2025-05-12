@@ -65,17 +65,13 @@
 
           packages = [
             # C++ Tools
+            pkgs.stdenv.cc
             pkgs.cmake
             pkgs.gnumake
             pkgs.clang-tools
             pkgs.llvmPackages.openmp
             pkgs.gdb
             pkgs.valgrind
-            pkgs.gcc
-            pkgs.glibc
-            pkgs.pkgsi686Linux.gcc
-            pkgs.pkgsi686Linux.glibc
-            pkgs.gcc-arm-embedded
             # Graphics drivers
             pkgs.mesa
             pkgs.libglvnd
