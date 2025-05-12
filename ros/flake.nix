@@ -45,6 +45,9 @@
             "-Wno-error=implicit-function-declaration"
             "-Wno-error=incompatible-pointer-types"
             "-Wno-error=int-conversion"
+            "-I${pkgs.gcc-arm-embedded}/arm-none-eabi/include"
+            "-isystem"
+            "${pkgs.gcc-arm-embedded}/lib/gcc/arm-none-eabi/${pkgs.gcc-arm-embedded.version}/include"
           ];
           NIX_CXXFLAGS_COMPILE = pkgs.lib.concatStringsSep " " [
             "-Wno-error=implicit-function-declaration"
@@ -62,13 +65,17 @@
 
           packages = [
             # C++ Tools
-            pkgs.stdenv.cc
             pkgs.cmake
             pkgs.gnumake
             pkgs.clang-tools
             pkgs.llvmPackages.openmp
             pkgs.gdb
             pkgs.valgrind
+            pkgs.gcc
+            pkgs.glibc
+            pkgs.pkgsi686Linux.gcc
+            pkgs.pkgsi686Linux.glibc
+            pkgs.gcc-arm-embedded
             # Graphics drivers
             pkgs.mesa
             pkgs.libglvnd
@@ -80,7 +87,6 @@
             pkgs.libGL
             pkgs.glm
             # Dependencies
-            pkgs.gcc-arm-embedded
             pkgs.ninja
             pkgs.mbed-cli
             pkgs.mercurial
