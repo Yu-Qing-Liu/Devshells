@@ -100,7 +100,7 @@
             pkgs.freetype
             pkgs.gnuplot
             (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
-              setuptools distutils pyqt5 pyglm numpy pyyaml pandas pyopengl pyopengl-accelerate cryptography twisted pillow scipy networkx matplotlib freetype-py
+              python-lsp-server setuptools distutils pyqt5 pyglm numpy pyyaml pandas pyopengl pyopengl-accelerate cryptography twisted pillow scipy networkx matplotlib freetype-py
             ]))
             (with pkgs.rosPackages.noetic; buildEnv {
               paths = [
