@@ -40,11 +40,12 @@
             pkgs.vulkan-tools
             pkgs.vulkan-tools-lunarg
             pkgs.spirv-tools
-            pkgs.shaderc
             # Dependencies
+            pkgs.shaderc
             pkgs.glfw
             pkgs.glm
             pkgs.freetype
+            pkgs.openssl
           ];
 
           LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
@@ -53,6 +54,10 @@
             "${pkgs.freetype}/lib"
             "${pkgs.vulkan-loader}/lib"
             "${pkgs.vulkan-validation-layers}/lib"
+          ];
+
+          PKG_CONFIG_PATH = pkgs.lib.makeSearchPath "lib/pkgconfig" [
+            pkgs.shaderc.dev
           ];
 
           VULKAN_SDK = "${pkgs.vulkan-headers}";
