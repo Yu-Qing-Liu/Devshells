@@ -9,4 +9,4 @@ if ! command -v nix >/dev/null 2>&1; then
   . "$HOME/.nix-profile/etc/profile.d/nix.sh"
 fi
 
-nix run .
+exec nix develop .
