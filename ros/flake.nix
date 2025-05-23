@@ -99,6 +99,7 @@
             pkgs.xwayland
             pkgs.freetype
             pkgs.gnuplot
+            pkgs.ranger
             (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
               python-lsp-server setuptools distutils pyqt5 pyglm numpy pyyaml pandas pyopengl pyopengl-accelerate cryptography twisted pillow scipy networkx matplotlib freetype-py
             ]))
