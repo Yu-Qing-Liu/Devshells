@@ -17,14 +17,14 @@
             allowUnfree = true;
             cudaSupport = true;
             permittedInsecurePackages = [
-              "freeimage-unstable-2021-11-01"
+              "freeimage-3.18.0-unstable-2024-04-18"
             ];
           };
           overlays = [
             nix-ros-overlay.overlays.default
             (final: prev: {
               tbb = prev.tbb_2021_11;
-              tensorrt = unstable.cudaPackages.tensorrt_8_6;
+              tensorrt = prev.cudaPackages.tensorrt_8_6;
               opencv = prev.opencv.overrideAttrs (old: {
                 cmakeFlags = old.cmakeFlags ++ [
                   (prev.lib.cmakeBool "WITH_CUDA" true)
