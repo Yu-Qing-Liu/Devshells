@@ -80,6 +80,7 @@
             pkgs.libGL
             pkgs.glm
             # Dependencies
+            pkgs.uwsm
             pkgs.ninja
             pkgs.mbed-cli
             pkgs.mercurial
