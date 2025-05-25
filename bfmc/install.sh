@@ -19,5 +19,5 @@ if ! command -v nix >/dev/null 2>&1; then
 fi
 
 # Enter the dev shell
-exec nix develop .
+exec nix develop --impure -c $SHELL
 
