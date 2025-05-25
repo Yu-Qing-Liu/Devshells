@@ -11,6 +11,9 @@
           inherit system;
           config = {
             allowUnfree = true;
+            permittedInsecurePackages = [
+              "freeimage-3.18.0-unstable-2024-04-18"
+            ];
           };
           overlays = [
             nix-ros-overlay.overlays.default
@@ -32,6 +35,12 @@
           ];
 
           packages = [
+            pkgs.mesa
+            pkgs.libglvnd
+            pkgs.qt5.full
+            pkgs.libGLU
+            pkgs.libGL
+            pkgs.glm
             (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
               requests opencv4 psutil python-lsp-server setuptools distutils pyqt5 pyglm numpy pyyaml pandas pyopengl pyopengl-accelerate cryptography twisted pillow scipy networkx matplotlib freetype-py
             ]))
@@ -49,12 +58,14 @@
                 image-transport
                 geometry-msgs
                 tf2-geometry-msgs
-                gazebo-msgs
-                gazebo-ros
                 robot-localization
               ];
             })
           ];
+          GDK_BACKEND = "x11";
+          QT_QPA_PLATFORM = "xcb";
+          PYOPENGL_PLATFORM="x11";
+          SDL_VIDEODRIVER = "x11";
         };
       });
 
