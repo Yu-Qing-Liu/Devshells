@@ -41,6 +41,9 @@
             pkgs.libGLU
             pkgs.libGL
             pkgs.glm
+            pkgs.libxkbcommon
+            pkgs.wayland
+            pkgs.wayland-protocols
             (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
               requests opencv4 psutil python-lsp-server setuptools distutils pyqt5 pyglm numpy pyyaml pandas pyopengl pyopengl-accelerate cryptography twisted pillow scipy networkx matplotlib freetype-py
             ]))
@@ -66,6 +69,10 @@
           QT_QPA_PLATFORM = "xcb";
           PYOPENGL_PLATFORM="x11";
           SDL_VIDEODRIVER = "x11";
+          QT_OPENGL="desktop";
+          LIBGL_DRIVERS_PATH="${pkgs.mesa.drivers}/lib/dri";
+          LD_LIBRARY_PATH="${pkgs.mesa.drivers}/lib:${pkgs.libGL}/lib:$LD_LIBRARY_PATH";
+          GTK_MODULES="canberra-gtk-module";
         };
       });
 
