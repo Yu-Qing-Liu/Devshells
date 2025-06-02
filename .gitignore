@@ -5,6 +5,7 @@ AD/
 Simulator/
 Scripts/
 Engine/
+Computer/
 .dotfiles/
 .ros/
 .local/
