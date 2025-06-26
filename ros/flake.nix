@@ -79,6 +79,9 @@
             pkgs.libGLU
             pkgs.libGL
             pkgs.glm
+            pkgs.libxkbcommon
+            pkgs.wayland
+            pkgs.wayland-protocols
             # Dependencies
             pkgs.uwsm
             pkgs.ninja
@@ -133,6 +136,8 @@
             "${pkgs.tensorrt}/lib"
             "${pkgs.opencv}/lib"
             "${pkgs.acados}/lib"
+            "${pkgs.mesa.drivers}/lib"
+            "${pkgs.libGL}/lib"
           ];
 
           TRT_LIBPATH = "${pkgs.tensorrt}/lib";
@@ -147,6 +152,9 @@
           QT_QPA_PLATFORM = "xcb";
           PYOPENGL_PLATFORM="x11";
           SDL_VIDEODRIVER = "x11";
+          GTK_MODULES="canberra-gtk-module";
+          QT_OPENGL="desktop";
+          LIBGL_DRIVERS_PATH="${pkgs.mesa.drivers}/lib/dri";
         };
       });
 
