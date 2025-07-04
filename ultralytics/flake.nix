@@ -21,6 +21,7 @@
           ps.torch
           ps.torchvision
           ps.opencv4
+          ps.python-lsp-server
         ]);
         
       in {
@@ -32,9 +33,9 @@
 
           # Environment variables for CUDA
           shellHook = ''
+            export SHELL=/run/current-system/sw/bin/zsh
             export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib:$LD_LIBRARY_PATH
             export PYTHONPATH=${pythonEnv}/${pythonEnv.sitePackages}:$PYTHONPATH
-            zsh
           '';
         };
       });
