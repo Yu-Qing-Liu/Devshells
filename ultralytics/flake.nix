@@ -32,7 +32,7 @@
 
           # Environment variables for CUDA
           shellHook = ''
-            export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib:${pkgs.cudatoolkit}/lib:$LD_LIBRARY_PATH
+            export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib:$LD_LIBRARY_PATH
             export PYTHONPATH=${pythonEnv}/${pythonEnv.sitePackages}:$PYTHONPATH
             zsh
           '';
