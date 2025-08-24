@@ -12,3 +12,4 @@ scripts/
 .ros/
 .local/
 .gcroots/
+temp*
